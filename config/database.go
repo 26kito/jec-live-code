@@ -20,9 +20,9 @@ func InitDatabase() (*sqlx.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	// defer db.Close()
+	defer db.Close()
 
-	// db.MustExec(schema)
+	db.MustExec(schema)
 
 	return db, nil
 }
