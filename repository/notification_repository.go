@@ -8,6 +8,7 @@ import (
 
 type NotificationRepository interface {
 	Create(payload entity.InsertNotificationRequest)
+	GetUnsendNotification() ([]entity.Notification, error)
 }
 
 type notificationRepository struct {
@@ -30,4 +31,22 @@ func (r *notificationRepository) Create(payload entity.InsertNotificationRequest
 	}
 
 	tx.Commit()
+}
+
+func (r *notificationRepository) GetUnsendNotification() ([]entity.Notification, error) {
+	notification := []entity.Notification{}
+
+	tx := r.MustBegin()
+
+	query := `SELECT * FROM notifications WHERE is_send = $1`
+
+	err := tx.Select(&notification, query, false)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return notification, nil
 }

@@ -38,6 +38,20 @@ func (s *NotificationService) CreateNotification(c *fiber.Ctx) error {
 	})
 }
 
+func (s *NotificationService) GetUnsendNotification(c *fiber.Ctx) error {
+	notifications, err := s.notificationRepository.GetUnsendNotification()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Success",
+		"data":    notifications,
+	})
+}
+
 func validateCreateNotificationRequest(payload entity.InsertNotificationRequest) error {
 	if payload.Email == "" {
 		return fmt.Errorf("email is required")

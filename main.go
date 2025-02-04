@@ -22,6 +22,7 @@ func main() {
 	notificationService := service.NewNotificationService(notificationRepository)
 
 	app.Post("/notifications", notificationService.CreateNotification)
+	app.Get("/unsend-notifications", notificationService.GetUnsendNotification)
 
 	app.Listen(":3000")
 }
