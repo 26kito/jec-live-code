@@ -1,8 +1,10 @@
 package service
 
 import (
+	"fmt"
 	"jec-live-code/entity"
 	"jec-live-code/repository"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -23,9 +25,43 @@ func (s *NotificationService) CreateNotification(c *fiber.Ctx) error {
 		})
 	}
 
+	if err := validateCreateNotificationRequest(payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
 	s.notificationRepository.Create(payload)
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"message": "Notification created",
 	})
+}
+
+func validateCreateNotificationRequest(payload entity.InsertNotificationRequest) error {
+	if payload.Email == "" {
+		return fmt.Errorf("email is required")
+	}
+
+	if len(payload.Email) > 30 || len(payload.Email) < 10 {
+		return fmt.Errorf("invalid email")
+	}
+
+	if !strings.Contains(payload.Email, "@") == true {
+		return fmt.Errorf("invalid email")
+	}
+
+	if payload.Message == "" {
+		return fmt.Errorf("message is required")
+	}
+
+	if payload.Type == "" {
+		return fmt.Errorf("type is required")
+	}
+
+	if payload.Type != "SMS" && payload.Type != "EMAIL" {
+		return fmt.Errorf("invalid notification type")
+	}
+
+	return nil
 }
