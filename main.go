@@ -23,6 +23,7 @@ func main() {
 
 	app.Post("/notifications", notificationService.CreateNotification)
 	app.Get("/unsend-notifications", notificationService.GetUnsendNotification)
+	app.Put("/notifications/:id", notificationService.UpdateIsSendNotification)
 
 	app.Listen(":3000")
 }

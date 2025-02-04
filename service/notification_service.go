@@ -52,6 +52,27 @@ func (s *NotificationService) GetUnsendNotification(c *fiber.Ctx) error {
 	})
 }
 
+func (s *NotificationService) UpdateIsSendNotification(c *fiber.Ctx) error {
+	// Get id from URL
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	err = s.notificationRepository.UpdateIsSendNotification(id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Notification updated",
+	})
+}
+
 func validateCreateNotificationRequest(payload entity.InsertNotificationRequest) error {
 	if payload.Email == "" {
 		return fmt.Errorf("email is required")
