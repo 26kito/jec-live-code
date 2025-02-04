@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"jec-live-code/entity"
+	"jec-live-code/domain/notification/entity"
 	"log"
 
 	"github.com/jmoiron/sqlx"

@@ -2,8 +2,8 @@ package main
 
 import (
 	"jec-live-code/config"
-	"jec-live-code/repository"
-	"jec-live-code/service"
+	"jec-live-code/domain/notification/repository"
+	"jec-live-code/domain/notification/service"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,7 +12,6 @@ import (
 func main() {
 	db, err := config.InitDatabase()
 	if err != nil {
-		// panic(err)
 		log.Println(err)
 	}
 

@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	"jec-live-code/entity"
-	"jec-live-code/repository"
+	"jec-live-code/domain/notification/entity"
+	"jec-live-code/domain/notification/repository"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -91,7 +91,7 @@ func validateCreateNotificationRequest(payload entity.InsertNotificationRequest)
 	}
 
 	if payload.Type == "" {
-		return fmt.Errorf("type is required")
+		return fmt.Errorf("notification type is required")
 	}
 
 	if payload.Type != "SMS" && payload.Type != "EMAIL" {
