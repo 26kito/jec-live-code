@@ -34,3 +34,18 @@ func (n *NotificationController) CreateNotification(c *fiber.Ctx) error {
 		"message": "Notification created",
 	})
 }
+
+func (n *NotificationController) GetUnsendNotification(c *fiber.Ctx) error {
+	res, err := n.notificationService.GetUnsendNotification()
+
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"message": "Success",
+		"data":    res,
+	})
+}

@@ -8,6 +8,7 @@ import (
 
 type NotificationService interface {
 	CreateNotification(payload entity.InsertNotificationRequest) error
+	GetUnsendNotification() (*pb.GetUnsendNotificationResponse, error)
 }
 
 type notificationService struct {
@@ -30,4 +31,14 @@ func (n *notificationService) CreateNotification(payload entity.InsertNotificati
 	}
 
 	return nil
+}
+
+func (n *notificationService) GetUnsendNotification() (*pb.GetUnsendNotificationResponse, error) {
+	res, err := n.client.GetUnsendNotification(context.Background(), &pb.Empty{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

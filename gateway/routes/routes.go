@@ -21,7 +21,7 @@ func NewRouter() *fiber.App {
 	notificationController := controller.NewNotificationController(notificationService)
 
 	app.Post("/notifications", notificationController.CreateNotification)
-	// app.Get("/unsend-notifications", notificationController.GetUnsendNotification)
+	app.Get("/unsend-notifications", notificationController.GetUnsendNotification)
 	// app.Put("/notifications/:id", notificationController.UpdateIsSendNotification)
 
 	return app
