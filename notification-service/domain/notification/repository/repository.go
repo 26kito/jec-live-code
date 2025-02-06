@@ -2,14 +2,14 @@ package repository
 
 import (
 	"fmt"
-	"jec-live-code/domain/notification/entity"
 	"log"
+	"notification-service/domain/notification/entity"
 
 	"github.com/jmoiron/sqlx"
 )
 
 type NotificationRepository interface {
-	Create(payload entity.InsertNotificationRequest)
+	CreateNotification(payload entity.InsertNotificationRequest) (*entity.Notification, error)
 	GetUnsendNotification() ([]entity.Notification, error)
 	UpdateIsSendNotification(id int) error
 }
@@ -22,18 +22,28 @@ func NewNotificationRepository(db *sqlx.DB) NotificationRepository {
 	return &notificationRepository{db}
 }
 
-func (r *notificationRepository) Create(payload entity.InsertNotificationRequest) {
+func (r *notificationRepository) CreateNotification(payload entity.InsertNotificationRequest) (*entity.Notification, error) {
+	var notification entity.Notification
+
 	tx := r.MustBegin()
 
-	query := `INSERT INTO notifications (email, message, type, is_send) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO notifications (email, message, type, is_send, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
 
-	_, err := tx.Exec(query, payload.Email, payload.Message, payload.Type, false)
+	err := tx.QueryRow(query, payload.Email, payload.Message, payload.Type, false, "now()", "now()").Scan(&notification.ID)
 	if err != nil {
 		tx.Rollback()
-		return
+		return nil, err
 	}
 
+	// getQuery := `SELECT id, email, message, type, is_send, created_at, updated_at FROM notifications WHERE id = $1`
+	// err = tx.Get(&notification, getQuery, notification.ID)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	tx.Commit()
+
+	return &notification, nil
 }
 
 func (r *notificationRepository) GetUnsendNotification() ([]entity.Notification, error) {
@@ -62,9 +72,9 @@ func (r *notificationRepository) UpdateIsSendNotification(id int) error {
 		return err
 	}
 
-	query := `UPDATE notifications SET is_send = $1 WHERE id = $2`
+	query := `UPDATE notifications SET is_send = $1, updated_at = $2 WHERE id = $3`
 
-	_, err = tx.Exec(query, true, id)
+	_, err = tx.Exec(query, true, "now()", id)
 	if err != nil {
 		tx.Rollback()
 		return err

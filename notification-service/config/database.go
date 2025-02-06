@@ -11,7 +11,9 @@ var schema = `
 		email TEXT NOT NULL,
 		message TEXT NOT NULL,
 		type TEXT NOT NULL,
-		is_send BOOLEAN NOT NULL
+		is_send BOOLEAN NOT NULL,
+		created_at TIMESTAMP NOT NULL,
+		updated_at TIMESTAMP NOT NULL
 	)
 `
 
@@ -20,9 +22,8 @@ func InitDatabase() (*sqlx.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer db.Close()
 
-	db.MustExec(schema)
+	// db.MustExec(schema)
 
 	return db, nil
 }
