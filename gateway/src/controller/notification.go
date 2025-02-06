@@ -49,3 +49,22 @@ func (n *NotificationController) GetUnsendNotification(c *fiber.Ctx) error {
 		"data":    res,
 	})
 }
+
+func (n *NotificationController) UpdateIsSendNotification(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	if err := n.notificationService.UpdateIsSendNotification(uint32(id)); err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"message": "Notification updated",
+	})
+}

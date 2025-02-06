@@ -9,6 +9,7 @@ import (
 type NotificationService interface {
 	CreateNotification(payload entity.InsertNotificationRequest) error
 	GetUnsendNotification() (*pb.GetUnsendNotificationResponse, error)
+	UpdateIsSendNotification(id uint32) error
 }
 
 type notificationService struct {
@@ -41,4 +42,16 @@ func (n *notificationService) GetUnsendNotification() (*pb.GetUnsendNotification
 	}
 
 	return res, nil
+}
+
+func (n *notificationService) UpdateIsSendNotification(id uint32) error {
+	_, err := n.client.UpdateIsSendNotification(context.Background(), &pb.UpdateIsSendNotificationRequest{
+		Id: id,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
