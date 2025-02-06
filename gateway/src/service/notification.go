@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	entity "notification-service/domain/notification/entity"
-	pb "notification-service/proto"
+	entity "gateway/dto"
+	pb "gateway/proto"
 )
 
 type NotificationService interface {

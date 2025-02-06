@@ -1,7 +1,7 @@
 package config
 
 import (
-	pb "notification-service/proto"
+	pb "gateway/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

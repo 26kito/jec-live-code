@@ -1,8 +1,8 @@
 package controller
 
 import (
+	entity "gateway/dto"
 	"gateway/src/service"
-	entity "notification-service/domain/notification/entity"
 
 	"github.com/gofiber/fiber/v2"
 )

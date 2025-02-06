@@ -6,7 +6,7 @@ import (
 )
 
 var schema = `
-	CREATE TABLE notifications (
+	CREATE TABLE IF NOT EXISTS notifications (
 		id SERIAL PRIMARY KEY,
 		email TEXT NOT NULL,
 		message TEXT NOT NULL,
@@ -18,12 +18,12 @@ var schema = `
 `
 
 func InitDatabase() (*sqlx.DB, error) {
-	db, err := sqlx.Connect("postgres", "host=localhost port=5432 user=postgres password=12345678 dbname=jec-live-code sslmode=disable")
+	db, err := sqlx.Connect("postgres", "host=junction.proxy.rlwy.net port=36991 user=postgres password=XNincXXJrBYOanQFJxfBHMmaRRjgQoqY dbname=railway sslmode=disable")
 	if err != nil {
 		return nil, err
 	}
 
-	// db.MustExec(schema)
+	db.MustExec(schema)
 
 	return db, nil
 }

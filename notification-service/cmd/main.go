@@ -22,18 +22,10 @@ func main() {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
 
-	// app := fiber.New()
-
 	server := grpc.NewServer()
 
 	notificationRepository := repository.NewNotificationRepository(db)
 	notificationService := service.NewNotificationService(notificationRepository)
-
-	// app.Post("/notifications", notificationService.CreateNotification)
-	// app.Get("/unsend-notifications", notificationService.GetUnsendNotification)
-	// app.Put("/notifications/:id", notificationService.UpdateIsSendNotification)
-
-	// app.Listen(":3000")
 
 	pb.RegisterNotificationServiceServer(server, notificationService)
 

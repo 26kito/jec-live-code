@@ -2,8 +2,6 @@ module gateway
 
 go 1.23.5
 
-replace notification-service => ../notification-service
-
 require (
 	github.com/gofiber/fiber/v2 v2.52.6
 	google.golang.org/grpc v1.70.0
